@@ -1,6 +1,6 @@
 # ChIPseq data processing training
 
-## Install required softwares using conda package manager
+## Install required softwares using *conda* package manager
 
 ```bash
 conda config --add channels defaults
@@ -19,7 +19,9 @@ conda install -c bioconda -y macs2=2.2.7.1
 
 ```
 
-### Process TF ChIPseq data
+## Process TF ChIPseq data
+
+#### Mapping of raw data against reference genome
 
 ```bash
 
@@ -33,8 +35,15 @@ bowtie2 -p 2 --trim5 8 --local  -x ~/20211013_CL_bioinfo_training/database/A_nid
 samtools index TF1_OE_16h_HA_ChIPMix64_3_bt2.bam
 samtools flagstat TF1_OE_16h_HA_ChIPMix64_3_bt2.bam > alignment.stats
 
+```
+
+#### Generate normalized coverage tracks
+
+```bash
+
 mappedReads=`grep -P ' 0 mapped \(' alignment.stats | grep -P -o '^\d+'`
 scale=`perl -e "printf('%.3f', 1000000/$mappedReads)"`
+
 
 ##macs2 pileup with 200bp extension
 macs2 pileup --extsize 200 -i TF1_OE_16h_HA_ChIPMix64_3_bt2.bam -o TF1_OE_16h_HA_ChIPMix64_3_pileup.bdg
@@ -51,25 +60,36 @@ rm temp_normalized.bdg
 bedSort TF1_OE_16h_HA_ChIPMix64_3_normalized.bdg TF1_OE_16h_HA_ChIPMix64_3_normalized.bdg
 bedGraphToBigWig TF1_OE_16h_HA_ChIPMix64_3_normalized.bdg ~/20211013_CL_bioinfo_training/database/A_nidulans_FGSC_A4/reference/genome.size TF1_OE_16h_HA_ChIPMix64_3_normalized.bw
 
+```
 
+#### Peak calling using MACS2
+
+```bash
 ##macs2 narrowPeak calling, without using input:
 macs2 callpeak -t TF1_OE_16h_HA_ChIPMix64_3_bt2.bam --name TF1_OE_16h_HA_ChIPMix64_3.macs2 --outdir macs2_withoutCtrl_narrow -g 30e6 --nomodel --extsize 200 -B --SPMR
 
 ```
 
 
-### Process TF ChIPseq data
+## Process RNA-polII ChIPseq data
+
+#### Mapping of raw data against reference genome
 ```bash
+
+mkdir WT_16h_polII_ChIPMix66_3
+cd WT_16h_polII_ChIPMix66_3
 
 bowtie2 -p 2  --trim5 8 --local  -x ~/20211013_CL_bioinfo_training/database/A_nidulans_FGSC_A4/bowtie2_index/A_nidulans_FGSC_A4_version_s10-m04-r03_chromosomes.fasta -U ~/20211013_CL_bioinfo_training/raw_data/WT_16h_polII_ChIPMix66_3_R1.fastq.gz | samtools view -bS - | samtools sort  -O bam -o WT_16h_polII_ChIPMix66_3_bt2.bam
 
-##reference config
-conf_polIIFeatures=""
-##
 
 ## mapping stats
 samtools index WT_16h_polII_ChIPMix66_3_bt2.bam
 samtools flagstat WT_16h_polII_ChIPMix66_3_bt2.bam > alignment.stats
+
+```
+
+#### Generate normalized coverage tracks
+```bash
 
 mappedReads=`grep -P ' 0 mapped \(' alignment.stats | grep -P -o '^\d+'`
 scale=`perl -e "printf('%.3f', 1000000/$mappedReads)"`
@@ -89,7 +109,11 @@ rm temp_normalized.bdg
 bedSort WT_16h_polII_ChIPMix66_3_normalized.bdg WT_16h_polII_ChIPMix66_3_normalized.bdg
 bedGraphToBigWig WT_16h_polII_ChIPMix66_3_normalized.bdg ~/20211013_CL_bioinfo_training/database/A_nidulans_FGSC_A4/reference/genome.size WT_16h_polII_ChIPMix66_3_normalized.bw
 
-perl ~/20211013_CL_bioinfo_training/scripts/zqWinSGR-v2.pl -feature_file ~/20211013_CL_bioinfo_training/database/A_nidulans_FGSC_A4/annotation/A_nidulans_FGSC_A4_version_s10-m04-r03_CDS_Unique.bed -socre_file WT_16h_polII_ChIPMix66_3_normalized.bdg -chrom_column 1 -start_column 2 -end_column 3  -direction_column 6 -bin_count 1 -output_folder $PWD -outout_name WT_16h_polII_ChIPMix66_3_polii_expr.tab
+```
 
+#### Calculate gene level FPKM score
+
+```bash
+perl ~/20211013_CL_bioinfo_training/scripts/zqWinSGR-v2.pl -feature_file ~/20211013_CL_bioinfo_training/database/A_nidulans_FGSC_A4/annotation/A_nidulans_FGSC_A4_version_s10-m04-r03_CDS_Unique.bed -socre_file WT_16h_polII_ChIPMix66_3_normalized.bdg -chrom_column 1 -start_column 2 -end_column 3  -direction_column 6 -bin_count 1 -output_folder $PWD -outout_name WT_16h_polII_ChIPMix66_3_polii_expr.tab
 
 ```
