@@ -26,7 +26,7 @@ conda install -c bioconda -y macs2=2.2.7.1
 
 cd raw_data
 mkdir fastqc
-fastqc -t 2 --outdir fastqc */fastq.gz
+fastqc -t 2 --outdir fastqc *.fastq.gz
 multiqc --title "FastQC summary" -d -dd 1 --module fastqc --filename multiqc_report.html $PWD/fastqc
 
 ```
