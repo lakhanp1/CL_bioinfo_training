@@ -10,7 +10,8 @@ conda config --add channels conda-forge
 conda create -n omics_py37 python=3.7
 conda deactivate
 conda activate omics_py37
-conda install -y perl=5.26.2 perl-lwp-simple perl-encode-locale 
+conda install -y perl=5.26.2 perl-lwp-simple perl-encode-locale
+conda install -c bioconda -y fastqc multiqc
 conda install -c bioconda -y htslib=1.10.2  samtools=1.10 bcftools=1.10.1
 conda install -c bioconda -y bowtie2=2.3.5.1 bwa=0.7.17  hisat2=2.2.0 stringtie=2.1.2
 conda install -c bioconda -y bedtools=2.29.2 deeptools=3.4.3
@@ -18,6 +19,18 @@ conda install -c bioconda -y ucsc-bedsort ucsc-bedtobigbed ucsc-bedtopsl ucsc-be
 conda install -c bioconda -y macs2=2.2.7.1
 
 ```
+
+## QC of the raw data
+
+```bash
+
+cd raw_data
+mkdir fastqc
+fastqc -t 2 --outdir fastqc */fastq.gz
+multiqc --title "FastQC summary" -d -dd 1 --module fastqc --filename multiqc_report.html $PWD/fastqc
+
+```
+
 
 ## Process TF ChIPseq data
 
