@@ -42,7 +42,7 @@ mkdir TF1_OE_16h_HA_ChIPMix64_3
 cd TF1_OE_16h_HA_ChIPMix64_3
 
 ## mapping raw data using bowtie2
-bowtie2 -p 2 --trim5 8 --local  -x ~/20211013_CL_bioinfo_training/database/A_nidulans_FGSC_A4/bowtie2_index/A_nidulans_FGSC_A4_version_s10-m04-r03_chromosomes.fasta -U ~/20211013_CL_bioinfo_training/raw_data/TF1_OE_16h_HA_ChIPMix64_3_R1.fastq.gz | samtools view -bS - | samtools sort  -O bam -o TF1_OE_16h_HA_ChIPMix64_3_bt2.bam
+bowtie2 -p 2 --trim5 8 --local  -x ~/20211013_CL_bioinfo_training/database/A_nidulans_FGSC_A4/bowtie2_index/A_nidulans_FGSC_A4_version_s10-m04-r03_chromosomes.fasta -U ~/20211013_CL_bioinfo_training/raw_data/AN0153_sCopy_OE_16h_HA_ChIPMix64_3_R1.fastq.gz | samtools view -bS - | samtools sort  -O bam -o TF1_OE_16h_HA_ChIPMix64_3_bt2.bam
 
 ## extract mapping stats
 samtools index TF1_OE_16h_HA_ChIPMix64_3_bt2.bam
