@@ -60,7 +60,7 @@ scale=`echo "scale=3; 1000000 / $mappedReads" | bc`
 
 
 ##macs2 pileup with 200bp extension
-macs2 pileup --extsize 200 -i TF1_OE_16h_HA_ChIPMix64_3_bt2.bam -o TF1_OE_16h_HA_ChIPMix64_3_pileup.bdg
+macs2 pileup -f BAM --extsize 200 -i TF1_OE_16h_HA_ChIPMix64_3_bt2.bam -o TF1_OE_16h_HA_ChIPMix64_3_pileup.bdg
 
 ##normalize
 printf "Normalizing TF1_OE_16h_HA_ChIPMix64_3_pileup.bdg with factor %s\n" $scale
@@ -110,7 +110,7 @@ scale=`perl -e "printf('%.3f', 1000000/$mappedReads)"`
 scale=`echo "scale=3; 1000000 / $mappedReads" | bc`
 
 ##macs2 pileup with 200bp extension
-macs2 pileup --extsize 200 -i WT_16h_polII_ChIPMix66_3_bt2.bam -o WT_16h_polII_ChIPMix66_3_pileup.bdg -f BAM
+macs2 pileup -f BAM --extsize 200 -i WT_16h_polII_ChIPMix66_3_bt2.bam -o WT_16h_polII_ChIPMix66_3_pileup.bdg -f BAM
 
 ##normalize
 printf "Normalizing WT_16h_polII_ChIPMix66_3_pileup.bdg with factor %s\n" $scale
