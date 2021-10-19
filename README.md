@@ -54,7 +54,7 @@ samtools flagstat TF1_OE_16h_HA_ChIPMix64_3_bt2.bam > alignment.stats
 
 ```bash
 
-mappedReads=`grep -P ' 0 mapped \(' alignment.stats | grep -P -o '^\d+'`
+mappedReads=`grep -E ' 0 mapped \(' alignment.stats | grep -E -o '^\d+'`
 scale=`perl -e "printf('%.3f', 1000000/$mappedReads)"`
 
 
@@ -104,7 +104,7 @@ samtools flagstat WT_16h_polII_ChIPMix66_3_bt2.bam > alignment.stats
 #### Generate normalized coverage tracks
 ```bash
 
-mappedReads=`grep -P ' 0 mapped \(' alignment.stats | grep -P -o '^\d+'`
+mappedReads=`grep -E ' 0 mapped \(' alignment.stats | grep -E -o '^\d+'`
 scale=`perl -e "printf('%.3f', 1000000/$mappedReads)"`
 
 ##macs2 pileup with 200bp extension
