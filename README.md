@@ -57,7 +57,6 @@ samtools flagstat TF1_OE_16h_HA_ChIPMix64_3_bt2.bam > alignment.stats
 mappedReads=`grep -E ' 0 mapped \(' alignment.stats | grep -E -o '^\d+'`
 scale=`perl -e "printf('%.3f', 1000000/$mappedReads)"`
 
-
 ##macs2 pileup with 200bp extension
 macs2 pileup -f BAM --extsize 200 -i TF1_OE_16h_HA_ChIPMix64_3_bt2.bam -o TF1_OE_16h_HA_ChIPMix64_3_pileup.bdg
 
@@ -106,7 +105,6 @@ samtools flagstat WT_16h_polII_ChIPMix66_3_bt2.bam > alignment.stats
 
 mappedReads=`grep -E ' 0 mapped \(' alignment.stats | grep -E -o '^\d+'`
 scale=`perl -e "printf('%.3f', 1000000/$mappedReads)"`
-scale=`echo "scale=3; 1000000 / $mappedReads" | bc`
 
 ##macs2 pileup with 200bp extension
 macs2 pileup -f BAM --extsize 200 -i WT_16h_polII_ChIPMix66_3_bt2.bam -o WT_16h_polII_ChIPMix66_3_pileup.bdg -f BAM
